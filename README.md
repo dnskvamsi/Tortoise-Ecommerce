@@ -1,14 +1,3 @@
-# Team Coral
-
-## Team Members
-
-- Aishwarya Patil (aishwaryapatil0401@gmail.com)
-- Girish Chalamalasetti (girishnaidu05@gmail.com)
-- Renu Sri Pabboju (renusripabboju@gmail.com)
-- Laxmi Pranaya Yennam (yennamlaxmipranaya@gmail.com)
-
-## How to Initialize and Run the App
-
 ### Prerequisites
 
 - **RVM** is assumed (see [Rails Demos-n-Deets](https://rails-demos-n-deets-2023.herokuapp.com/demos/development-environment) for setup instructions).

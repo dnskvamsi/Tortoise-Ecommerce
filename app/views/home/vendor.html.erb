@@ -1,0 +1,47 @@
+<div class="container" style="text-align:center;">
+  <div class="row mb-4 text-end">
+    <div class="text-start col-4">
+      <%= link_to 'Add Accessory', new_accessory_path, class:"btn btn-primary" %>
+    </div>
+    <div class="col-4">
+    </div>
+    <div class="col-4 text-end">
+      <%= link_to 'Add Tortoise', new_tortoise_path, class:"btn btn-primary" %>
+    </div>
+  </div>
+  <div class="row">
+    <h2>Tortoises</h2>
+  </div>
+  <% @tortoises.each_slice(3) do |tortoise_list| %>
+    <div class="row">
+      <% tortoise_list.each do |tortoise| %>
+        <div class="col-4 mb-5">
+          <%= image_tag "tortoise#{rand(14)}.jpg", style: "width: 100%; height: 350px", alt: tortoise.name, class: 'rounded mr-2' %>
+          <div class="text-start row justify-content-around">
+            <div class="btn btn-light mt-2 btn-sm col-3"> <%= tortoise.name %></div>
+            <%= link_to("Edit Inventory", edit_tortoise_path(tortoise), class: "col-4 mt-2 btn btn-success btn-sm") %>
+            <div class="btn btn-light mt-2 btn-sm col-3"> <%= tortoise.gender %> </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+  <hr>
+  <div class="row">
+    <h2> Accessories </h2>
+  </div>
+  <% @accessories.each_slice(3) do |accessory_list| %>
+    <div class="row">
+      <% accessory_list.each do |accessory| %>
+        <div class="col-4 mb-5">
+          <%= image_tag "tortoise#{rand(14)}.jpg", style: "width: 100%; height: 350px", alt: accessory.name, class: 'rounded mr-2' %>
+          <div class="text-start row justify-content-around">
+            <div class="btn btn-light mt-2 btn-sm col-3"> <%= accessory.name %></div>
+            <%= link_to("Edit Accessory", edit_accessory_path(accessory), class: "col-4 mt-2 btn btn-success btn-sm") %>
+            <div class="btn btn-light mt-2 btn-sm col-3"> <%= accessory.gender %> </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

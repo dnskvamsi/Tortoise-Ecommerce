@@ -1,0 +1,8 @@
+<% accessory = cart_item.item %>
+
+<tr>
+  <td><%= accessory.name %></td>
+  <td><%= accessory.quantity %></td>
+  <td><%= number_to_currency(accessory.price) %></td>
+  <td><%= number_to_currency(accessory.quantity * accessory.price) %></td>
+</tr>

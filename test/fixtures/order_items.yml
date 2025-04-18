@@ -1,0 +1,35 @@
+# == Schema Information
+#
+# Table name: order_items
+#
+#  id         :bigint           not null, primary key
+#  item_type  :string
+#  price      :decimal(, )
+#  quantity   :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  item_id    :integer
+#  order_id   :bigint           not null
+#
+# Indexes
+#
+#  index_order_items_on_order_id  (order_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (order_id => orders.id)
+#
+
+one:
+  id: 1
+  order_id: 1
+  quantity: 1
+  price: 9.99
+  item: one (Tortoise)
+
+two:
+  id: 2
+  order_id: 2
+  quantity: 1
+  price: 9.99
+  item: one (Tortoise)

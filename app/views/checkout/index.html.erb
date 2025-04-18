@@ -1,0 +1,81 @@
+<div class="checkout-container">
+  <h1>Checkout</h1>
+  <div class="cart-summary">
+    <h3>Cart Summary</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Species</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @cart_items.each do |cart_item| %>
+            <%= render partial: "#{cart_item.item.class.name.downcase}", locals: { cart_item: cart_item} %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="pricing">
+    <h4>Total Price: <%= number_to_currency(@total_price) %></h4>
+  </div>
+  <!-- Discount Form -->
+  <%= form_with url: apply_discount_path, method: :get, local: true do |f| %>
+    <div>
+      <%= f.label :discount_code, 'Enter Discount Code:(Optional)' %>
+      <%= f.text_field :discount_code, placeholder: 'Enter code', class: "form-control", required: true %>
+      <%= f.submit 'Apply Discount', class: "btn btn-primary" %>
+    </div>
+  <% end %>
+  <!-- Only show the discounted price if a discount code is applied -->
+  <% if session[:discounted_price] && session[:discounted_price] != @total_price %>
+    <h4>Total Price After Discount: <%= number_to_currency(@discounted_price) %></h4>
+  <% else %>
+    <h4>Total Price After Discount: </h4>
+ <!-- Blank when no discount applied -->
+  <% end %>
+  <!-- Card Details Form -->
+  <%= form_with url: complete_payment_path, method: :post, local: true do |f| %>
+    <h4>Address:</h4>
+    <div class="form-group">
+      <%= f.label :address_line_1, 'Address Line 1' %>
+      <%= f.text_field :address_line_1, class: "form-control", placeholder: "Enter street address", required: true %>
+    </div>
+    <div class="form-group">
+      <%= f.label :address_line_2, 'Address Line 2 (Optional)' %>
+      <%= f.text_field :address_line_2, class: "form-control", placeholder: "Enter apartment/suite number (optional)" %>
+    </div>
+    <div class="form-group">
+      <%= f.label :city, 'City' %>
+      <%= f.text_field :city, class: "form-control", placeholder: "Enter city", required: true %>
+    </div>
+    <div class="form-group">
+      <%= f.label :state, 'State/Province' %>
+      <%= f.text_field :state, class: "form-control", placeholder: "Enter state or province", required: true %>
+    </div>
+    <div class="form-group">
+      <%= f.label :postal_code, 'Postal Code' %>
+      <%= f.text_field :postal_code, class: "form-control", placeholder: "Enter postal code", required: true %>
+    </div>
+    <div class="form-group">
+      <%= f.label :country, 'Country' %>
+      <%= f.text_field :country, class: "form-control", placeholder: "Enter country", required: true %>
+    </div>
+    <h4>Card Details:</h4>
+    <div>
+      <%= f.label :card_number, 'Card Number:' %>
+      <%= f.text_field :card_number, placeholder: '1234 5678 9012 3456', required: true %>
+    </div>
+    <div>
+      <%= f.label :card_expiry, 'Expiry Date:' %>
+      <%= f.text_field :card_expiry, placeholder: 'MM/YY', required: true %>
+    </div>
+    <div>
+      <%= f.label :card_cvv, 'CVV:' %>
+      <%= f.password_field :card_cvv, placeholder: '123', required: true %>
+    </div>
+    <%= f.submit 'Complete Payment' , class: "btn btn-success btn-lg"%>
+  <% end %>

@@ -1,0 +1,68 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id                     :bigint           not null, primary key
+#  card_holder_name       :string
+#  card_number            :string
+#  cvv                    :string
+#  email                  :string           default(""), not null
+#  encrypted_password     :string           default(""), not null
+#  expiry_date            :string
+#  first_name             :string
+#  last_name              :string
+#  phone_number           :string
+#  remember_created_at    :datetime
+#  reset_password_sent_at :datetime
+#  reset_password_token   :string
+#  role                   :integer
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#
+# Indexes
+#
+#  index_users_on_email                 (email) UNIQUE
+#  index_users_on_reset_password_token  (reset_password_token) UNIQUE
+#
+
+user_one:
+  id: 1
+  email: "alice@email.com"
+  encrypted_password: "<%= BCrypt::Password.create('password123') %>"
+  last_name: "alice"
+  phone_number: "1234567890"
+  role: 0
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+user_two:
+  id: 2
+  email: "bob@email.com"
+  encrypted_password: "<%= BCrypt::Password.create('password123') %>"
+  first_name: "bob"
+  last_name: "bob"
+  phone_number: "0987654321"
+  role: 1
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+admin:
+  id: 3
+  email: "admin@email.com"
+  encrypted_password: "<%= BCrypt::Password.create('password123') %>"
+  last_name: "admin"
+  phone_number: "1234567890"
+  role: "admin"
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+vendor:
+  id: 4
+  email: "vendor@email.com"
+  encrypted_password: "<%= BCrypt::Password.create('password123') %>"
+  first_name: "v"
+  last_name: "v"
+  phone_number: "0987654321"
+  role: 2
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>

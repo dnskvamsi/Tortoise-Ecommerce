@@ -1,0 +1,46 @@
+<div class="float-end">
+  <%= link_to 'Add New', new_profile_path, class:"btn btn-primary" %>
+</div>
+<div>
+  <div class="container">
+    <% @profiles.each_slice(4) do |profiles_list| %>
+      <div class="row">
+        <% profiles_list.each do |profile| %>
+          <div class="col-4 mt-5">
+            <div class="card rounded pt-2 pb-2">
+              <div class="row mb-3 mt-2">
+                <div class="col-3 ms-2 mt-1">
+                  <i class="fas fa-user-circle" style="font-size: 22px"></i>
+                  <%= profile.user.first_name %>
+                </div>
+                <div class="col-5 text-center mt-1">
+                  <%= profile.title %>
+                </div>
+                <div class="col-3 text-end">
+                  <%= turbo_stream_from @profile, :follows %>
+                  <div id=<%= "follow_#{dom_id(profile)}" %>>
+                    <%= render partial: "shared/follows", locals: { following: Follow.exists?(user: current_user, profile: profile), profile: profile }%>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <%= link_to image_tag(profile.image, class:"rounded mx-auto d-block",style:"width:100%;height:300px;"), nil %>
+              </div>
+              <div class="row mt-1">
+                <div class="col-5 ms-2">
+                  <%= link_to "View Profile", profile_path(profile) ,class: 'btn btn-info btn-sm mt-2'%>
+                </div>
+                <div class="col-6 text-end">
+                  <%= turbo_stream_from profile, :likes %>
+                  <div id="<%= dom_id(profile) %>">
+                    <%= render partial:"shared/likes", locals: {profile: profile, liked: Like.exists?(user: current_user, profile: profile)}%>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

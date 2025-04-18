@@ -1,0 +1,12 @@
+<h3 class="text-center"> Chart Session </h3>
+<% @chat_sessions.each do |chat_session| %>
+  <%= render 'chat_session', chat_session: chat_session %>
+<% end %>
+
+<% if @chat_sessions.empty? %>
+  <div class="card">
+    <%= form_for ChatSession.new, url: '/chat_session', html: {class: 'row g-3'}, method: :post  do |f| %>
+      <%= f.submit "Add New", class: 'btn btn-primary' %>
+    <% end %>
+  </div>
+<% end %>

@@ -1,0 +1,63 @@
+<div class="container">
+<div class="row text-center">
+  <h3><%= image_tag('support_icon.svg')%> Support Tools </h3>
+</div>
+  <div class="row mt-5">
+    <div class="col-4">
+      <div class="card">
+      <%= image_tag('card', class: 'card-img-top', style: 'max-width: 20rem;') %>
+        <div class="card-body">
+          <h4 class="card-title text-center">Request Payment Refunds</h4>
+          <p class="card-text fs-6 fst-italic">If it's eligible for a refund, we can process your refund automatically</p>
+          <a href="#" class="btn btn-primary text-center d-block">Request Refund</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card">
+        <%= image_tag('box', class: 'card-img-top', style: 'max-width: 20rem;') %>
+        <div class="card-body">
+          <h4 class="card-title text-center">Return your order</h4>
+          <p class="card-text fs-6 fst-italic">Pick-up Issues on Items you Wish to Return, Damaged, Defective or Wrong Item Received</p>
+          <a href="#" class="btn btn-primary text-center d-block">Return</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card">
+        <%= image_tag('customer-service', class: 'card-img-top d-block mx-auto mt-2', style: 'max-width: 15rem;') %>
+        <div class="card-body">
+          <h4 class="card-title text-center">Chat with us</h4>
+          <p class="card-text fs-6 fst-italic">Issues with Bill Payments and want to contact the support</p>
+          <% if @chat_session.present? %>
+            <%= link_to 'Chat here', chat_session_path(@chat_session.id), class: "btn btn-primary text-center d-block"  %>
+          <% else %>
+            <%= button_to 'Chat here', '/chat_session', class: "btn btn-primary text-center d-block", style: "width: 100%", form_class: 'd-block' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-5">
+    <div class="col-4">
+      <div class="card">
+        <%= image_tag('technical_support', class: 'card-img-top d-block mx-auto mt-3', style: 'max-width: 15rem;') %>
+        <div class="card-body">
+          <h5 class="card-title text-center">Website Issues</h5>
+          <p class="card-text fs-6 fst-italic">Cannot place an order, not able to view the product, website not responsive</p>
+           <a href="#" class="btn btn-primary text-center d-block">Raise a ticket</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card">
+        <%= image_tag('track_packages', class: 'card-img-top d-block mx-auto mt-3', style: 'max-width: 15rem;') %>
+        <div class="card-body">
+          <h5 class="card-title text-center">Shipment Issues</h5>
+          <p class="card-text fs-6 fst-italic">Shipment is late, not delivered, received damaged product, missing item</p>
+          <a href="#" class="btn btn-primary text-center d-block">Raise a ticket</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

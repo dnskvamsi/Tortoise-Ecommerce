@@ -1,0 +1,18 @@
+<h1>Track Order</h1>
+<p>Order ID: <%= @order.id %></p>
+<p>Status: <%= @status %></p>
+
+<% if @can_cancel %>
+  <button class="btn btn-warning" id="cancel-button" onclick="toggleCancel()">Cancel Your Order</button>
+  <div id="cancel-container" style="display:none; margin-top: 10px;">
+    <%= button_to 'Confirm Cancel Order', cancel_order_path(@order), method: :patch, class: 'btn btn-danger' %>
+  </div>
+<% end %>
+
+<a href="<%= orders_path %>">Back to Orders</a>
+
+<script>
+  function toggleCancel() {
+    document.getElementById('cancel-container').style.display = 'block';
+  }
+</script>

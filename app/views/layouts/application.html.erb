@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>App</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <!-- Turbo Frame for Flash Messages -->
+    <turbo-frame id="flash">
+      <% flash.each do |key, value| %>
+        <div class="alert alert-<%= key == 'notice' ? 'success' : 'danger' %> alert-dismissible fade show" role="alert">
+          <%= value %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <% end %>
+    </turbo-frame>
+    <style>
+      .body {
+        background-color: white;
+        color: white;
+        margin: 0;
+        padding: 0;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background: black;
+      }
+
+      nav ul {
+        text-align: center;
+        margin-top: 5px;
+        list-style-type: none;
+        color: white;
+      }
+
+      nav ul li {
+        display: inline;
+        margin-right: 30px;
+      }
+
+      .navbar-logo {
+        display: flex;
+        align-items: center;
+      }
+
+      .navbar-logo img {
+        max-height: 70px;
+      }
+
+      .navbar-nav {
+        display: flex;
+        align-items: center;
+        list-style: none;
+        margin: 0;
+      }
+
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .user-greeting {
+        font-size: 14px;
+        color: white;
+      }
+
+      .account-icon {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        color: white;
+        gap: 5px;
+      }
+
+      .account-icon img {
+        max-height: 30px;
+        border-radius: 50%;
+        border: 2px solid white;
+      }
+
+      .sign-out-btn {
+        color: white;
+        background: #dc3545;
+        padding: 5px 10px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 14px;
+      }
+
+      .sign-out-btn:hover {
+        background: #c82333;
+        color: white;
+      }
+
+      .wishlist-badge {
+        background-color: red;
+        color: white;
+        border-radius: 50%;
+        padding: 2px 6px;
+        font-size: 12px;
+        position: relative;
+        top: -5px;
+        left: -5px;
+      }
+
+      .btn.btn-primary {
+        background-color: #0d6efd;
+      }
+
+      .btn.chat-class:hover {
+        background-color: black !important;
+      }
+
+    </style>
+    <header class="navbar">
+      <!-- Navbar Logo -->
+      <div class="navbar-logo">
+        <%= link_to image_tag('logo.jpeg', alt: 'Logo', class: 'w-100', style: 'max-width: 70px;') %>
+        <div style="margin-left: 10px;">
+          <div style="font-size: 16px; color: white; font-weight: bold;">TORTOPIA CREATIONS</div>
+          <div style="font-size: 12px; color: white;">Bringing Timeless Shells To Life</div>
+        </div>
+      </div>
+      <!-- Navigation Links -->
+      <div style="text-align:center;">
+        <nav>
+          <ul>
+            <li><%= link_to raw("<i class='fas fa-home'></i>"), home_path, style: 'color: white;' %></li>
+            <% if current_user.nil? || (current_user && current_user.customer?) %>
+              <li><%= link_to raw("<i class='far fa-compass' style='color: white;'></i> Explore"), browse_listings_path, style: 'color: white;', class: 'text-decoration-none' %></li>
+            <% end %>
+            <% if user_signed_in? && current_user.customer? %>
+              <li><%= link_to "Orders", orders_path, style: 'color: white;', class: 'text-decoration-none' %></li>
+              <li><%= link_to "Support", support_index_path, style: 'color: white;', class: 'text-decoration-none' %></li>
+              <li>
+                <% if @chat_session.present? %>
+                  <%= link_to raw("<i class='far fa-comment' style='color: white;'></i> Chat"), chat_session_path(@chat_session.id), style: 'color: white;', class: 'text-decoration-none' %>
+                <% else %>
+                  <%= button_to raw("<i class='far fa-comment' style='color: white;'></i> Chat"), '/chat_session', style: "color: white", class: "d-inline btn btn-outline-light border-0 p-0 chat-class m-0", form_class: "d-inline" %>
+                <% end %>
+              </li>
+              <li>
+                <%= link_to wishlists_path, style: 'color: white;', class: 'text-decoration-none' do %>
+                  <i class="fas fa-heart"></i> Wishlist
+                <% end %>
+                <span id="wishlist-count" class="wishlist-badge"><%= current_user&.wishlists&.count || 0 %></span>
+              </li>
+            <% end %>
+            <li><%= link_to "Profile", profile_index_path, style: 'color: white;', class: 'text-decoration-none' %></li>
+            <% if user_signed_in? && current_user.vendor? %>
+              <li><%= link_to "Analytics", sales_path, style: 'color:white;', class: 'text-decoration-none' %></li>
+            <% end %>
+            <li><%= link_to "FAQ", faq_index_path, style: 'color:white;', class: 'text-decoration-none' %></li>
+          </ul>
+        </nav>
+      </div>
+      <!-- Account Section -->
+      <nav class="navbar-nav">
+        <% if user_signed_in? %>
+          <div class="user-info">
+            <span class="user-greeting">Hi, <%= current_user.first_name %></span>
+            <% if current_user.customer? %>
+              <%= link_to image_tag('cart.jpg', alt: 'Cart', height: '30'),cart_path, class: 'cart-icon' %>
+            <% end %>
+            <!-- Account Icon -->
+            <%= link_to account_path, class: 'account-icon' do %>
+              <%= image_tag 'profile.jpg', alt: 'Profile Icon', height: '30', class: 'profile-icon' %>
+              <span>Account</span>
+            <% end %>
+            <!-- Sign Out -->
+            <%= button_to 'Sign Out', destroy_user_session_path, method: :delete, class: 'sign-out-btn border-0', data: { turbo: false } %>
+          </div>
+        <% else %>
+          <%= link_to 'Log In', new_user_session_path, class: 'btn btn-primary btn-sm' %>
+        <% end %>
+      </nav>
+    </header>
+    <main role="main" class="container">
+      <%= yield %>
+    </main>
+  </body>
+</html>

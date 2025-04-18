@@ -1,0 +1,6 @@
+<h2><%= item.name %> Details</h2>
+<p><strong>Species:</strong> <%= item.species %></p>
+<p><strong>Price:</strong> <%= number_to_currency(item.price) %></p>
+<p><strong>Quantity:</strong> <%= item.quantity %></p>
+<p><strong>Total:</strong> <%= number_to_currency(item.quantity * item.price) %></p>
+<%= link_to "Back to Cart", cart_path, class: "btn btn-secondary" %>

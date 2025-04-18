@@ -1,0 +1,119 @@
+<div class="container mt-4">
+  <div class="card p-4 mb-4 shadow-sm">
+    <%= form_with url: browse_listings_path, method: :get, local: true do %>
+      <div class="row" style="font-size: 12px;">
+        <!-- Species Filter -->
+        <div class="col-md-3">
+          <%= label_tag "filter[species]", "Species:", class: "form-label fw-bold" %>
+          <%= select_tag "filter[species]",
+              options_for_select(["All"] + Tortoise.pluck(:species).uniq, params.dig(:filter, :species)),
+              class: "form-select", style: "font-size:12px;" %>
+        </div>
+        <!-- Gender Filter -->
+        <div class="col-md-3">
+          <%= label_tag "filter[gender]", "Gender:", class: "form-label fw-bold" %>
+          <%= select_tag "filter[gender]",
+              options_for_select(["All"] + Tortoise.pluck(:gender).uniq, params.dig(:filter, :gender)),
+              class: "form-select", style: "font-size:12px;" %>
+        </div>
+        <!-- Shell Pattern Filter -->
+        <div class="col-md-3">
+          <%= label_tag "filter[shell_pattern]", "Shell Pattern:", class: "form-label fw-bold" %>
+          <%= select_tag "filter[shell_pattern]",
+              options_for_select(["All"] + Tortoise.pluck(:shell_pattern).uniq, params.dig(:filter, :shell_pattern)),
+              class: "form-select", style: "font-size:12px;" %>
+        </div>
+        <!-- Shell Texture Filter -->
+        <div class="col-md-3">
+          <%= label_tag "filter[shell_texture]", "Shell Texture:", class: "form-label fw-bold" %>
+          <%= select_tag "filter[shell_texture]",
+              options_for_select(["All"] + Tortoise.pluck(:shell_texture).uniq, params.dig(:filter, :shell_texture)),
+              class: "form-select", style: "font-size:12px;" %>
+        </div>
+      </div>
+      <!-- Filter Buttons -->
+      <div class="text-center mt-3">
+        <%= submit_tag "Filter", class: "btn btn-success btn-sm mx-2" %>
+        <%= link_to "Reset Filters", browse_listings_path, class: "btn btn-danger btn-sm mx-2" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+<!-- Listings Section -->
+<h1 class="text-center mb-4">Tortoise Listings</h1>
+<div class="row">
+  <% if @tortoises.any? %>
+    <% @tortoises.each do |tortoise| %>
+      <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <div class="card shadow-sm h-100">
+          <%= image_tag "tortoise#{rand(14)}.jpg",style: "width: 100%; height: 180px;", class: "card-img-top", alt: tortoise.name %>
+          <div class="card-body">
+            <h5 class="card-title text-center"><%= tortoise.name %></h5>
+            <p class="card-text"><strong>Species:</strong> <%= tortoise.species %></p>
+            <p class="card-text"><strong>Gender:</strong> <%= tortoise.gender %></p>
+            <p class="card-text"><strong>Price:</strong> <%= number_to_currency(tortoise.price) %></p>
+          </div>
+          <div class="card-footer text-center">
+            <div class="container">
+              <div class="row mb-3">
+                <div class="col text-start">
+                  <%= button_to 'Buy now', '#', class: 'btn btn-success btn-sm' %>
+                </div>
+                <div class="col text-end">
+                  <%= button_to raw("<i class='fas fa-shopping-cart'></i>"), cart_items_path(tortoise_id: tortoise.id, quantity: 1), method: :post, form_class: 'd-inline', class: "btn btn-primary btn-sm mx-1"%>
+                  <%= button_to raw("<i class='fas fa-heart'></i>"), wishlists_path(tortoise_id: tortoise.id), method: :post, class: "btn btn-warning btn-sm mx-1", form_class: 'd-inline' %>
+                </div>
+              </div>
+              <div class="row">
+                <%= link_to "View Details", show_path(tortoise), class: "btn btn-info btn-sm" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="col-12">
+      <p class="text-center text-muted">No tortoises match your filters.</p>
+    </div>
+  <% end %>
+</div>
+
+<h1 class="text-center mb-4"> Accessory Listing </h1>
+
+<div class="row">
+  <% if @accessories.any? %>
+    <% @accessories.each do |accessory| %>
+      <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <div class="card shadow-sm h-100">
+          <%= image_tag "tortoise_accessory#{rand(9)}.jpg",style: "width: 100%; height: 180px;", class: "card-img-top", alt: accessory.name %>
+          <div class="card-body">
+            <h5 class="card-title text-center"><%= accessory.name %></h5>
+            <p class="card-text"><strong>Gender:</strong> <%= accessory.gender %></p>
+            <p class="card-text"><strong>Price:</strong> <%= number_to_currency(accessory.price) %></p>
+          </div>
+          <div class="card-footer text-center">
+            <div class="container">
+              <div class="row mb-3">
+                <div class="col text-start">
+                  <%= button_to 'Buy now', '#', class: 'btn btn-success btn-sm' %>
+                </div>
+                <div class="col text-end">
+                  <%= button_to raw("<i class='fas fa-shopping-cart'></i>"), cart_items_path(accessory_id: accessory.id, quantity: 1), method: :post, form_class: 'd-inline', class: "btn btn-primary btn-sm mx-1"%>
+                  <%= button_to raw("<i class='fas fa-heart'></i>"), wishlists_path(accessory_id: accessory.id), method: :post, class: "btn btn-warning btn-sm mx-1", form_class: 'd-inline' %>
+                </div>
+              </div>
+              <div class="row">
+                <%= link_to "View Details", accessory_path(accessory), class: "btn btn-info btn-sm" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="col-12">
+      <p class="text-center text-muted">No accessory match your filters.</p>
+    </div>
+  <% end %>
+</div>

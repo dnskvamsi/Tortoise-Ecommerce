@@ -1,0 +1,30 @@
+<h1 class="text-center">My Orders</h1>
+
+<div class="mb-4 text-center">
+  <%= link_to "Back to Shop", browse_listings_path, class: "btn btn-secondary" %>
+</div>
+
+<div class="row">
+  <% if @orders.any? %>
+    <% @orders.order(:status).each do |order| %>
+      <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title text-center">Order #<%= order.id %></h5>
+
+            <p class="card-text"><strong>Total Price:</strong> <%= number_to_currency(order.total_price) %></p>
+            <p class="card-text"><strong>Discounted Price:</strong> <%= number_to_currency(order.discounted_price) %></p>
+            <p class="card-text"><strong>Order Date:</strong> <%= order.order_date.strftime('%B %d, %Y') %></p>
+          </div>
+          <div class="card-footer text-center">
+            <%= link_to "View Order", order_url(order), class: "btn btn-#{button_class(order)} btn-sm" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="col-12">
+      <p class="text-center text-muted">You have not placed any orders yet.</p>
+    </div>
+  <% end %>
+</div>

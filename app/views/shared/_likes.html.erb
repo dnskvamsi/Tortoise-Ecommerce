@@ -1,0 +1,13 @@
+<div class="p-0">
+  <% unless liked %>
+    <%= button_to  like_path(profile.id), class: "btn", remote: true do %>
+      <i class="fa fa-heart" style="font-size:20px;color:white"></i>
+      <span style="font-size: 14px; color: white"> <%= profile.likes.count %> </span>
+    <% end %>
+  <% else %>
+    <%= button_to dislike_path(profile.id), method: :delete, class: "btn", remote: true do %>
+      <i class="fa fa-heart" style="font-size:20px;color:red"></i>
+      <span style="font-size: 14px; color: white"> <%= profile.likes.count %> </span>
+    <% end %>
+  <% end %>
+</div>

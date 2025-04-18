@@ -1,0 +1,10 @@
+<% unless rating %>
+  <span style="font-size: 12px ">No rating for this product yet </span>
+<% else %>
+  <% rating.times do |idx| %>
+    <i class="fa fa-star" style="font-size: 10px; color:orange"></i>
+  <% end %>
+  <% (5-rating).times do %>
+    <i class="fa fa-star" style="font-size: 10px;color:white"></i>
+  <% end %>
+<% end %>

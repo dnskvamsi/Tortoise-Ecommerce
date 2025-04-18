@@ -1,0 +1,9 @@
+<% tortoise = cart_item.item %>
+
+<tr>
+  <td><%= tortoise.name %></td>
+  <td><%= tortoise.species %></td>
+  <td><%= cart_item.quantity %></td>
+  <td><%= number_to_currency(tortoise.price) %></td>
+  <td><%= number_to_currency(cart_item.quantity * tortoise.price) %></td>
+</tr>

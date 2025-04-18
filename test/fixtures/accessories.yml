@@ -1,0 +1,41 @@
+# == Schema Information
+#
+# Table name: accessories
+#
+#  id         :bigint           not null, primary key
+#  gender     :string
+#  name       :string
+#  price      :decimal(, )
+#  quantity   :decimal(, )
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  user_id    :bigint           not null
+#
+# Indexes
+#
+#  index_accessories_on_user_id  (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
+#
+
+accessory_one:
+  id: 1
+  user_id: 1
+  name: "Sunglasses"
+  gender: "Unisex"
+  price: 19.99
+  quantity: 10
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+accessory_two:
+  id: 2
+  user_id: 2
+  name: "Hat"
+  gender: "Female"
+  price: 14.99
+  quantity: 5
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>

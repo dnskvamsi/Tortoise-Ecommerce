@@ -1,0 +1,137 @@
+<div class="container mt-4">
+  <div class="row">
+    <!-- Sidebar Section -->
+    <div class="col-md-3">
+      <div class="list-group">
+        <%= link_to "Login & Security", "#login-security", class: "list-group-item list-group-item-action active" %>
+        <%= link_to "Payment Details", "#payment-details", class: "list-group-item list-group-item-action" %>
+        <%= link_to "My Address", "#my-address", class: "list-group-item list-group-item-action" %>
+      </div>
+    </div>
+
+    <!-- Main Content Section -->
+    <div class="col-md-9">
+      <!-- Login & Security Section -->
+      <div id="login-security" class="card shadow-sm mb-4">
+        <div class="card-header bg-dark text-white">Login & Security</div>
+        <div class="card-body">
+          <%= form_with model: @user, url: update_account_path, method: :patch, local: true do |f| %>
+            <div class="mb-3">
+              <%= f.label :first_name, "First Name", class: "form-label" %>
+              <%= f.text_field :first_name, class: "form-control", placeholder: "Enter your first name" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :last_name, "Last Name", class: "form-label" %>
+              <%= f.text_field :last_name, class: "form-control", placeholder: "Enter your last name" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :email, "Email", class: "form-label" %>
+              <%= f.email_field :email, class: "form-control", placeholder: "Enter your email address" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :phone_number, "Phone Number", class: "form-label" %>
+              <%= f.telephone_field :phone_number, class: "form-control", placeholder: "Enter your phone number" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :password, "Password", class: "form-label" %>
+              <%= f.password_field :password, class: "form-control", placeholder: "Enter new password (optional)" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :password_confirmation, "Confirm Password", class: "form-label" %>
+              <%= f.password_field :password_confirmation, class: "form-control", placeholder: "Confirm new password" %>
+            </div>
+            <div class="text-center">
+              <%= f.submit "Update Profile", class: "btn btn-success" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Payment Details Section -->
+      <div id="payment-details" class="card shadow-sm mb-4">
+        <div class="card-header bg-dark text-white">Payment Details</div>
+        <div class="card-body">
+          <%= form_with url: update_payment_details_path, method: :patch, local: true do |f| %>
+            <div class="mb-3">
+              <%= f.label :card_holder_name, "Cardholder Name", class: "form-label" %>
+              <%= f.text_field :card_holder_name, class: "form-control", placeholder: "Enter cardholder name" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :card_number, "Card Number", class: "form-label" %>
+              <%= f.text_field :card_number, class: "form-control", placeholder: "Enter your card number" %>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <%= f.label :expiry_date, "Expiry Date (MM/YY)", class: "form-label" %>
+                <%= f.text_field :expiry_date, class: "form-control", placeholder: "MM/YY" %>
+              </div>
+              <div class="col-md-6 mb-3">
+                <%= f.label :cvv, "CVV", class: "form-label" %>
+                <%= f.password_field :cvv, class: "form-control", placeholder: "Enter CVV" %>
+              </div>
+            </div>
+            <div class="text-center">
+              <%= f.submit "Update Payment Details", class: "btn btn-success" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- My Address Section -->
+      <div id="my-address" class="card shadow-sm mb-4">
+        <div class="card-header bg-dark text-white">My Address</div>
+        <div class="card-body">
+          <!-- List Existing Addresses -->
+          <% if @addresses.present? %>
+            <% @addresses.each do |address| %>
+              <div class="mb-3 border p-3 rounded">
+                <p><strong>Type:</strong> <%= address.address_type.capitalize %></p>
+                <p><strong>Apartment:</strong> <%= address.apartment_no %></p>
+                <p><strong>Street:</strong> <%= address.street_address %></p>
+                <p><strong>City:</strong> <%= address.city %></p>
+                <p><strong>State:</strong> <%= address.state %></p>
+                <p><strong>Pin Code:</strong> <%= address.pin_code %></p>
+
+              </div>
+            <% end %>
+          <% else %>
+            <p>No addresses found. Please add a new address below.</p>
+          <% end %>
+
+          <!-- Add New Address Form -->
+          <hr>
+          <h5>Add a New Address</h5>
+          <%= form_with model: @address, url: addresses_path, local: true do |f| %>
+            <div class="mb-3">
+              <%= f.label :address_type, "Save as", class: "form-label" %>
+              <%= f.select :address_type, ['home', 'work', 'other'], {}, class: "form-select" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :apartment_no, "Apartment No", class: "form-label" %>
+              <%= f.text_field :apartment_no, class: "form-control" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :street_address, "Street Address", class: "form-label" %>
+              <%= f.text_field :street_address, class: "form-control" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :city, "City", class: "form-label" %>
+              <%= f.text_field :city, class: "form-control" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :state, "State", class: "form-label" %>
+              <%= f.text_field :state, class: "form-control" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :pin_code, "Pin Code", class: "form-label" %>
+              <%= f.text_field :pin_code, class: "form-control" %>
+            </div>
+            <div class="text-center">
+              <%= f.submit "Save Address", class: "btn btn-success" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+<h1>Your Orders</h1>
+
+
+<p>Current User ID: <%= current_user.id %></#p>
+<% if @orders.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Total</th>
+        <th>Status</th>
+        <th>Ordered At</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @orders.each do |order| %>
+        <tr>
+          <td><%= order.id %></td>
+          <td><%= order.name %></td>
+          <td><%= order.quantity %></td>
+          <td><%= number_to_currency(order.total) %></td>
+          <td><%= order.status %></td>
+          <td><%= order.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>You have not placed any orders yet.</p>
+<% end %>

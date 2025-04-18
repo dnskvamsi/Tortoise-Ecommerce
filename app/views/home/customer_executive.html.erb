@@ -1,0 +1,17 @@
+<% @chat_sessions.each_slice(3) do |chat_session_list| %>
+  <div class="row">
+    <% chat_session_list.each do |chat_session| %>
+      <div class="col-4">
+        <div class="card rounded">
+          <div class="card-body">
+            <h5 class="card-title text-center"><%= chat_session.title %></h5>
+            <hr>
+              <%= image_tag('customer-service', class: 'card-img-top d-block mx-auto mt-2', style: 'max-width: 15rem;') %>
+            <p class="card-text"> Engage in friendly and professional conversations to foster loyalty and trust..</p>
+            <%= button_to " Chat with #{chat_session.customer_name}", add_participant_path, params: {chat_session_id: chat_session.id}, class: "btn btn-primary text-center d-block", style: "width: 100%", form_class: 'd-block' %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

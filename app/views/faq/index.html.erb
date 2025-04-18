@@ -1,0 +1,45 @@
+<div class="card mx-auto rounded mt-3" style="width: 600px">
+  <div class="card-body">
+    <% @faqs.each do |faq| %>
+      <div class="mb-3">
+        <h3 class="bold">
+          <%= faq.question %>
+        </h3>
+        <p>
+          <ul>
+            <% faq.answers.order(:created_at).each do |answer| %>
+              <li style="font-size: 12px"> <%= answer.content %></li>
+            <% end %>
+          </ul>
+          <% if user_signed_in? && current_user.vendor? %>
+            <%= form_for faq.answers.build, url: '/answer', method: :post  do |f| %>
+              <div class="row mb-1 p-2">
+                <div class="col-10 pe-0">
+                  <%= f.hidden_field :faq_id, value: faq.id %>
+                  <%= f.text_field :content, class: 'form-control', placeholder: 'post an answer', required: true %>
+                </div>
+                <div class="col-2">
+                  <%= f.submit "Answer", class: 'btn btn-primary d-block w-100' %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </p>
+      </div>
+    <% end %>
+  </div>
+  <% if user_signed_in? && current_user.customer? %>
+    <div class="mb-3">
+      <%= form_for Faq.new, url: '/faq', method: :post  do |f| %>
+        <div class="row mb-1 p-2">
+          <div class="col-10 pe-0">
+            <%= f.text_field :question, class: 'form-control', placeholder: 'post a question', required: true %>
+          </div>
+          <div class="col-2">
+            <%= f.submit "Post", class: 'btn btn-primary d-block w-100' %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

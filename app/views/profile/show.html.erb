@@ -1,0 +1,124 @@
+<% can_edit = @profile.user == current_user %>
+<div class="container">
+<div class="col text-end mb-2">
+  <%= link_to 'Update', edit_profile_path(@profile.id), class: 'btn btn-success btn-sm' %>
+</div>
+  <div class="row">
+    <div class="col-6">
+      <%= image_tag @profile.image, style: "width: 100%; height: 400px", alt: @profile.title, class: 'rounded mr-2' %>
+      <%= turbo_stream_from @profile, :likes %>
+      <div id="<%= dom_id(@profile) %>">
+        <%= render partial:"shared/likes", locals: {profile: @profile, liked: Like.exists?(user: current_user, profile: @profile)}%>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="card" style="height: 400px">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-2">
+              <h6>
+                 <i class="fas fa-user-circle" style="font-size: 26px"></i>
+                <%= @profile.user.first_name %>
+              </h6>
+            </div>
+            <div class="col-8">
+              <h4 class="card-title text-center"><%= @profile.title %></h4>
+            </div>
+            <div class="col-2">
+              <%= turbo_stream_from @profile, :follows %>
+              <div id=<%= "follow_#{dom_id(@profile)}" %>>
+                <%= render partial: "shared/follows", locals: { following: Follow.exists?(user: current_user, profile: @profile), profile: @profile }%>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div>
+            <h5 style= "text-align: justify"><%= @profile.description %></h5>
+          </div>
+          <hr>
+          <div class="row ms-1">
+            <h6>  Why Choose Our Tortoises? </h6>
+            <ul class="ms-4">
+              <li>
+                Ethically bred in optimal environments.
+              </li>
+              <li>
+                Certified healthy by veterinarians.
+              </li>
+              <li>
+                Expert advice on habitat setup, diet, and care provided.
+              </li>
+            </ul>
+          </div>
+          <div>
+            <button type="button" class="btn btn-primary dropdown-toggle w-100" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-share"></i> Share
+            </button>
+            <ul class="dropdown-menu w-100 ms-1 me-1" style= "width: 93% !important">
+              <li><%= link_to "Share on Facebook",  "https://www.facebook.com/", class: "dropdown-item" %> </li>
+              <li><%= link_to "Share on Twitter",  "https://www.x.com/", class: "dropdown-item" %></li>
+              <li><%= link_to "Share on linkedin",  "https://www.linkedin.com/", class: "dropdown-item" %> </li>
+              <li><%= link_to "Share on Instagram" , "https://www.instagram.com/", class: "dropdown-item" %></li>
+              <li><% link_to "Share on Telegram", "https://telegram.org/", class: "dropdown-item" %></li>
+              <li><a class="dropdown-item" href="<%= profile_url(@profile.id) %>" id="copyLink">Copy Link</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <%= form_for Comment.new, url: '/comment/create', method: :post do |form| %>
+      <%= form.hidden_field :profile_id, value: @profile.id %>
+      <div class="row">
+        <div class="col-auto pe-0 mt-2">
+           <i class="fas fa-user-circle" style="font-size: 30px"></i>
+        </div>
+        <div class="col-10">
+          <%= form.text_field :content, class:"form-control comment", placeholder: "comment"%>
+        </div>
+        <div class="col-1">
+          <%= form.submit "Create-comment",class: "btn btn-primary"%>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <div class="row mt-2 ms-2">
+    <div class="p-2 my-comments">
+      <% @profile.comments.order(created_at: :desc).all.each do |comment| %>
+        <p class="fw-bold mb-1 mt-4" style="font-size:16px">
+           <i class="fas fa-user-circle" style="font-size: 16px"></i>
+          <%= comment.user.first_name %>
+        </p>
+        <p class="ms-3 mb-1" style="font-size:14px">
+          <%= comment.content %>
+        </p>
+        <p class="fw-light float-end" style="font-size:10px;">Commented <%= time_ago_in_words comment.created_at%> ago</p>
+      <% end %>
+    </div>
+  </div>
+</div>
+<style>
+  .comment {
+    background: none;
+    border-bottom: white solid 1px;
+  }
+  .form-control.comment:focus {
+    background-color: #303030 !important;
+    color: white;
+  }
+</style>
+<script>
+  document.getElementById("copyLink").addEventListener("click", () => {
+    const linkToCopy = document.getElementById("copyLink");
+    const linkUrl = linkToCopy.href;
+
+    navigator.clipboard.writeText(linkUrl)
+      .then(() => {
+        alert("Link copied to clipboard!");
+      })
+      .catch(err => {
+        console.error("Error copying text: ", err);
+      });
+  });
+</script>

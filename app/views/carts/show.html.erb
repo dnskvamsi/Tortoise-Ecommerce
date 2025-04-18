@@ -1,0 +1,19 @@
+<div class="cart-container text-center">
+  <h1>Your Cart</h1>
+  <div class="mb-4 text-center">
+    <%= link_to "Back to Browse Listings", browse_listings_path, class: "btn btn-secondary" %>
+  </div>
+  <% if @cart_items.any? %>
+    <% @cart_items.each do |cart_item| %>
+      <div class="mb-5">
+        <%= render partial: "#{cart_item.item.class.name.underscore}", locals: { cart_item: cart_item }%>
+      </div>
+    <% end %>
+    <div class="cart-total text-right">
+      <h3>Total: <%= number_to_currency(@cart_items.sum { |cart_item| cart_item.quantity.to_f * cart_item.item.price.to_f }) %></h3>
+      <%= link_to "Proceed to Checkout", checkout_path, class: "btn btn-success" %>
+    </div>
+  <% else %>
+    <p>Your cart is empty.</p>
+  <% end %>
+</div>
